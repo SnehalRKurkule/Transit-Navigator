@@ -24,7 +24,10 @@ g++ main.cpp MetroMap.cpp utils.cpp -I. -o METROAPP.exe
 ### Output
 <img width="1351" height="931" alt="image" src="https://github.com/user-attachments/assets/ed212c38-ba87-4431-a5e3-c0ee31d03497" />
 <img width="1132" height="902" alt="image" src="https://github.com/user-attachments/assets/444a0fa0-3366-4582-8ee6-4077247cc9c7" />
-![Shortest Path Demo](Output/Shortest_Path.gif)
+#### Shortest Path Demo
+
+<!-- GIF animation -->
+![Shortest Path Demo](Output/Shortest_Path.gif).
 
 
 
