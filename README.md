@@ -22,7 +22,8 @@ The project combines **C++ (for backend shortest path logic)** with **HTML, CSS,
 g++ main.cpp MetroMap.cpp utils.cpp -I. -o METROAPP.exe                              
 .\METROAPP.exe     
 ### Output
-<img width="1351" height="931" alt="image" src="https://github.com/user-attachments/assets/ed212c38-ba87-4431-a5e3-c0ee31d03497" />
+<img width="1056" height="721" alt="image" src="https://github.com/user-attachments/assets/a10081b1-4b69-4622-97ef-86f86a1141f8" />
+
 <img width="1132" height="902" alt="image" src="https://github.com/user-attachments/assets/444a0fa0-3366-4582-8ee6-4077247cc9c7" />
 #### Shortest Path Demo
 
