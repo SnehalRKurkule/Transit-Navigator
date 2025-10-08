@@ -25,7 +25,7 @@ g++ main.cpp MetroMap.cpp utils.cpp -I. -o METROAPP.exe
 <img width="1351" height="931" alt="image" src="https://github.com/user-attachments/assets/ed212c38-ba87-4431-a5e3-c0ee31d03497" />
 <img width="1132" height="902" alt="image" src="https://github.com/user-attachments/assets/444a0fa0-3366-4582-8ee6-4077247cc9c7" />
 <video width="600" controls>
-  <source src="C:\Users\snehal\Downloads\Shortest Path.mp4" type="video/mp4">
+  <source src="Shortest Path.mp4" type="video/mp4">
   Shortest Path
 </video>
 
