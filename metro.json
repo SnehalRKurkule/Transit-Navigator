@@ -1,0 +1,53 @@
+{
+    "edges": [
+        {
+            "dist": 1.2,
+            "from": 0,
+            "to": 1
+        },
+        {
+            "dist": 12.5,
+            "from": 0,
+            "to": 4
+        },
+        {
+            "dist": 3.4,
+            "from": 0,
+            "to": 5
+        },
+        {
+            "dist": 0.9,
+            "from": 1,
+            "to": 2
+        },
+        {
+            "dist": 1.1,
+            "from": 2,
+            "to": 3
+        },
+        {
+            "dist": 2.6,
+            "from": 2,
+            "to": 5
+        },
+        {
+            "dist": 10.0,
+            "from": 4,
+            "to": 6
+        },
+        {
+            "dist": 2.1,
+            "from": 5,
+            "to": 6
+        }
+    ],
+    "stations": [
+        "Central",
+        "Park Street",
+        "Museum",
+        "City Hall",
+        "Airport",
+        "University",
+        "Tech Park"
+    ]
+}

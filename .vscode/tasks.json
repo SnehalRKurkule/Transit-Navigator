@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build metroapp",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "main.cpp",
+        "MetroMap.cpp",
+        "utils.cpp",
+        "-I.",
+        "-o",
+        "METROAPP.exe"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

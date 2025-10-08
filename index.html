@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Metro Visualization</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      background: #0077b6;
+      color: white;
+      padding: 10px;
+    }
+    canvas {
+      background: #ffffff;
+      border: 2px solid #0077b6;
+      margin-top: 20px;
+    }
+    button {
+      margin: 15px;
+      padding: 8px 15px;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #023e8a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Metro Path Visualization</h1>
+  <button onclick="loadPath()">Reload Path</button>
+  <canvas id="map" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById("map");
+    const ctx = canvas.getContext("2d");
+
+    // Example station layout (coordinates on canvas)
+    const stations = {
+      "Central": {x: 100, y: 300},
+      "Park Street": {x: 250, y: 200},
+      "Museum": {x: 400, y: 250},
+      "Airport": {x: 650, y: 150},
+      "University": {x: 500, y: 400},
+      "Tech Park": {x: 700, y: 500},
+      "City Hall": {x: 300, y: 450}
+    };
+
+    let path = [];
+    let animIndex = 0;
+    let t = 0;
+
+    function drawStations() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "14px Arial";
+
+      // Draw all stations
+      for (const name in stations) {
+        const s = stations[name];
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 12, 0, 2 * Math.PI);
+        ctx.fillStyle = "#0077b6";
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "black";
+        ctx.fillText(name, s.x + 15, s.y + 5);
+      }
+
+      // Draw connections (just link all in dict for now)
+      ctx.strokeStyle = "gray";
+      ctx.lineWidth = 2;
+      const stationNames = Object.keys(stations);
+      for (let i = 0; i < stationNames.length - 1; i++) {
+        const a = stations[stationNames[i]];
+        const b = stations[stationNames[i+1]];
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    function animate() {
+      if (path.length < 2) return;
+      drawStations();
+
+      let current = stations[path[animIndex]];
+      let next = stations[path[animIndex + 1]];
+
+      let x = (1 - t) * current.x + t * next.x;
+      let y = (1 - t) * current.y + t * next.y;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = "red";
+      ctx.fill();
+
+      t += 0.01;
+      if (t >= 1) {
+        t = 0;
+        animIndex++;
+        if (animIndex >= path.length - 1) return; // stop at destination
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function loadPath() {
+      fetch("path.json")
+        .then(res => res.json())
+        .then(data => {
+          path = data.path;
+          animIndex = 0;
+          t = 0;
+          animate();
+        })
+        .catch(err => {
+          console.error("Error loading path.json:", err);
+        });
+    }
+
+    // Draw stations on load
+    drawStations();
+  </script>
+</body>
+</html> 
+

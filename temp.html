@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Metro Visualization</title>
+  <style>
+    body { background: #f9f9f9; font-family: sans-serif; text-align: center; }
+    svg { border: 1px solid #aaa; margin-top: 20px; }
+    .station { fill: blue; }
+    .station-label { font-size: 14px; fill: black; }
+    .train { fill: red; }
+  </style>
+</head>
+<body>
+  <h2>Metro Shortest Path Visualization</h2>
+  <svg id="map" width="800" height="500"></svg>
+
+  <!-- <script>
+    const stations = {
+      "Central": {x: 100, y: 300},
+      "Park Street": {x: 250, y: 200},
+      "Museum": {x: 400, y: 250},
+      "Airport": {x: 650, y: 150}
+    };
+
+    // Example shortest path (in reality, load this from metro.json or your C++ program)
+    // const path = ["Central", "Park Street", "Museum", "Airport"];
+    fetch("path.json")
+  .then(res => res.json())
+  .then(data => { path = data.path; animate(); });
+
+
+    const svg = document.getElementById("map");
+
+    // Draw connections
+    for (let i = 0; i < path.length - 1; i++) {
+      const a = stations[path[i]];
+      const b = stations[path[i+1]];
+      let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", a.x); line.setAttribute("y1", a.y);
+      line.setAttribute("x2", b.x); line.setAttribute("y2", b.y);
+      line.setAttribute("stroke", "black");
+      svg.appendChild(line);
+    }
+
+    // Draw stations
+    for (let name in stations) {
+      const st = stations[name];
+      let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", st.x);
+      circle.setAttribute("cy", st.y);
+      circle.setAttribute("r", 15);
+      circle.setAttribute("class", "station");
+      svg.appendChild(circle);
+
+      let label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", st.x + 20);
+      label.setAttribute("y", st.y);
+      label.setAttribute("class", "station-label");
+      label.textContent = name;
+      svg.appendChild(label);
+    }
+
+    // Train marker
+    let train = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    train.setAttribute("r", 10);
+    train.setAttribute("class", "train");
+    svg.appendChild(train);
+
+    // Animate train along path
+    let seg = 0, t = 0;
+    function animate() {
+      if (seg < path.length - 1) {
+        const a = stations[path[seg]];
+        const b = stations[path[seg+1]];
+        let x = (1-t)*a.x + t*b.x;
+        let y = (1-t)*a.y + t*b.y;
+        train.setAttribute("cx", x);
+        train.setAttribute("cy", y);
+
+        t += 0.01; // speed
+        if (t >= 1) { t = 0; seg++; }
+        requestAnimationFrame(animate);
+      }
+    }
+    animate();
+  </script> -->
+
+  <script>
+  const canvas = document.getElementById("map");
+  const ctx = canvas.getContext("2d");
+
+  const stations = {
+    "Central": {x: 100, y: 300},
+    "Park Street": {x: 250, y: 200},
+    "Museum": {x: 400, y: 250},
+    "Airport": {x: 650, y: 150},
+    "University": {x: 500, y: 400},
+    "Tech Park": {x: 700, y: 500},
+    "City Hall": {x: 300, y: 450}
+  };
+
+  let path = [];
+  let animIndex = 0;
+  let t = 0;
+
+  function drawStations() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "14px Arial";
+
+    // Draw all stations
+    for (const name in stations) {
+      const s = stations[name];
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 12, 0, 2 * Math.PI);
+      ctx.fillStyle = "#0077b6";
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "black";
+      ctx.fillText(name, s.x + 15, s.y + 5);
+    }
+
+    // Draw path line if available
+    if (path.length > 1) {
+      ctx.strokeStyle = "orange";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      const start = stations[path[0]];
+      ctx.moveTo(start.x, start.y);
+      for (let i = 1; i < path.length; i++) {
+        const s = stations[path[i]];
+        ctx.lineTo(s.x, s.y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  function animate() {
+    if (path.length < 2) return;
+    drawStations();
+
+    let current = stations[path[animIndex]];
+    let next = stations[path[animIndex + 1]];
+
+    let x = (1 - t) * current.x + t * next.x;
+    let y = (1 - t) * current.y + t * next.y;
+
+    // Draw the moving train/dot
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+
+    t += 0.01;
+    if (t >= 1) {
+      t = 0;
+      animIndex++;
+      if (animIndex >= path.length - 1) return; // stop at last station
+    }
+    requestAnimationFrame(animate);
+  }
+
+  function loadPath() {
+    fetch("path.json")
+      .then(res => res.json())
+      .then(data => {
+        path = data.path;  // ensure path.json has full list of stations in order
+        animIndex = 0;
+        t = 0;
+        animate();
+      })
+      .catch(err => {
+        console.error("Error loading path.json:", err);
+      });
+  }
+
+  drawStations();
+</script>
+
+</body>
+</html>
+
